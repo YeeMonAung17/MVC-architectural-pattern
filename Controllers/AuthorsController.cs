@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Services;
+using System;
+using MVC.Models;
 
 namespace MVC.Controllers
 {
@@ -37,6 +39,28 @@ namespace MVC.Controllers
                 return NotFound();
             }
             return Ok(authors);
+        }
+
+        [HttpPost]
+        public IActionResult AddAuthor(Author author)
+        {
+
+            var addedAuthor = _authorService.AddAuthor(author);
+            if (author == null) return BadRequest();
+            return Ok(addedAuthor);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAuthorById(int id)
+        {
+            var authorDeleted = _authorService.RemoveAuthorById(id);
+            if (authorDeleted == null)
+            {
+                return NotFound();
+            }
+
+            // SUCCESS: Return 204 No Content
+            return NoContent();
         }
     }
 }
